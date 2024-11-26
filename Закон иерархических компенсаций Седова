@@ -1,0 +1,32 @@
+class PricingStrategy {
+public:
+    virtual double calculatePrice(double basePrice) = 0;
+    virtual ~PricingStrategy() = default;
+};
+
+class RegularPricing : public PricingStrategy {
+public:
+    double calculatePrice(double basePrice) override {
+        return basePrice;
+    }
+};
+
+class DiscountPricing : public PricingStrategy {
+public:
+    double calculatePrice(double basePrice) override {
+        return basePrice * 0.9;
+    }
+};
+
+class Product {
+    std::unique_ptr<PricingStrategy> strategy;
+public:
+    Product(std::unique_ptr<PricingStrategy> strat) : strategy(std::move(strat)) {}
+    double getPrice(double basePrice) {
+        return strategy->calculatePrice(basePrice);
+    }
+};
+
+// Фабрика:
+auto product = std::make_unique<Product>(std::make_unique<DiscountPricing>());
+std::cout << "Final Price: " << product->getPrice(100.0); // Вывод: 90
