@@ -1,0 +1,22 @@
+#include <gtest/gtest.h>
+#include <stdexcept>
+#include "FactorialCalculator.h"
+
+TEST(FactorialCalculatorTest, NormalCase) {
+    auto result = FactorialCalculator::calculateFactorials(5);
+    std::vector<unsigned long long> expected = {1, 2, 6, 24, 120};
+    ASSERT_EQ(result, expected);
+}
+
+TEST(FactorialCalculatorTest, InputZero) {
+    EXPECT_THROW(FactorialCalculator::calculateFactorials(0), std::invalid_argument);
+}
+
+TEST(FactorialCalculatorTest, Overflow) {
+    EXPECT_THROW(FactorialCalculator::calculateFactorials(100), std::overflow_error);
+}
+
+TEST(FactorialCalculatorTest, SingleValue) {
+    auto result = FactorialCalculator::calculateFactorials(1);
+    ASSERT_EQ(result, std::vector<unsigned long long>{1});
+}
